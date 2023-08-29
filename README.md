@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="128" src="./logo.svg" alt="slack logo" />
+  <img width="128" src="./logo.png" alt="slack logo" />
   <h1>go-slogx-slack</h1>
   <p>Handler for the `go.innotegrity.dev/slogx` package which enables logging to Slack via a webhook URL.</p>
   <hr />
