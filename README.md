@@ -38,7 +38,7 @@
 
 `go-slogx-slack` is a handler for the `go.innotegrity.dev/slogx` package. It allows you to use the `slogx` or `log/slog` library to log messages to Slack by using a webhook URL.
 
-Please review the [module documentation](https://pkg.go.dev/go.innotegrity.dev/slogxslack) for details on how to properly the functions and classes contained in this module.
+Please review the [module documentation](https://pkg.go.dev/go.innotegrity.dev/slogx-slack) for details on how to properly the functions and classes contained in this module.
 
 ## ✅ Requirements
 

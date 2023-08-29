@@ -11,7 +11,7 @@ import (
 
 	"go.innotegrity.dev/errorx"
 	"go.innotegrity.dev/slogx"
-	"go.innotegrity.dev/slogxslack"
+	slogxslack "go.innotegrity.dev/slogx-slack"
 	"golang.org/x/exp/slog"
 )
 

@@ -1,4 +1,4 @@
-module go.innotegrity.dev/slogxslack
+module go.innotegrity.dev/slogx-slack
 
 go 1.18
 
