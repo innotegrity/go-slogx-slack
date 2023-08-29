@@ -49,7 +49,7 @@ type SlackMessageFormatterOptions struct {
 	// Attribute values should be resolved by the handler before formatting. Any value returned by the formatter should
 	// be resolved prior to return.
 	//
-	// If nil, attributes are simply printed unchanged as key=value.
+	// If nil, attributes are simply printed unchanged.
 	AttrFormatter formatter.FormatAttrFn
 
 	// IgnoreAttrs is a list of regular expressions to use for matching attributes which should not be printed.
