@@ -54,8 +54,7 @@ type SlackMessageFormatterOptions struct {
 
 	// IgnoreAttrs is a list of regular expressions to use for matching attributes which should not be printed.
 	//
-	// Note that this only applies to attributes and not defined parts like the level, message, source or time. If you
-	// want to ignore those, simply leave them out of the PartOrder array.
+	// Note that this only applies to attributes and not defined parts like the level, message, source or time.
 	//
 	// If any regular expression does not compile, it is simply ignored.
 	IgnoreAttrs []string
