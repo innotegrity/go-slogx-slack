@@ -12,8 +12,8 @@ import (
 	"golang.org/x/exp/slog"
 )
 
-// SlackHandlerOptionsContext can be used to retrieve the options used by the handler from the context.
-type SlackHandlerOptionsContext struct{}
+// slackHandlerOptionsContext can be used to retrieve the options used by the handler from the context.
+type slackHandlerOptionsContext struct{}
 
 // SlackHandlerOptions holds the options for the Slack handler.
 type SlackHandlerOptions struct {
@@ -35,13 +35,41 @@ type SlackHandlerOptions struct {
 
 	// RecordFormatter specifies the formatter to use to format the record before sending it to Slack.
 	//
-	// If no formatter is supplied, formatters.DefaultSlackMessageFormatter is used to format the output.
+	// If no formatter is supplied, DefaultSlackMessageFormatter is used to format the output.
 	RecordFormatter SlackMessageFormatter
 
 	// WebhookURL is the Slack webhook URL to use in order to send the message.
 	//
 	// This is a required option.
 	WebhookURL string
+}
+
+// DefaultSlackHandlerOptions returns a default set of options for the handler.
+func DefaultSlackHandlerOptions() SlackHandlerOptions {
+	return SlackHandlerOptions{
+		HTTPClient:      http.DefaultClient,
+		Level:           slog.LevelInfo,
+		RecordFormatter: DefaultSlackMessageFormatter(),
+	}
+}
+
+// GetSlackHandlerOptionsFromContext retrieves the options from the context.
+//
+// If the options are not set in the context, a set of default options is returned instead.
+func GetSlackHandlerOptionsFromContext(ctx context.Context) *SlackHandlerOptions {
+	o := ctx.Value(slackHandlerOptionsContext{})
+	if o != nil {
+		if opts, ok := o.(*SlackHandlerOptions); ok {
+			return opts
+		}
+	}
+	opts := DefaultSlackHandlerOptions()
+	return &opts
+}
+
+// AddToContext adds the options to the given context and returns the new context.
+func (o *SlackHandlerOptions) AddToContext(ctx context.Context) context.Context {
+	return context.WithValue(ctx, slackHandlerOptionsContext{}, o)
 }
 
 // slackHandler is a log handler that writes records to Slack via a webhook.
@@ -87,7 +115,7 @@ func (h slackHandler) Enabled(ctx context.Context, level slog.Level) bool {
 // Any attributes duplicated between the handler and record, including within groups, are automaticlaly removed.
 // If a duplicate is encountered, the last value found will be used for the attribute's value.
 func (h *slackHandler) Handle(ctx context.Context, r slog.Record) error {
-	handlerCtx := context.WithValue(ctx, SlackHandlerOptionsContext{}, &h.options)
+	handlerCtx := h.options.AddToContext(ctx)
 	if !h.options.EnableAsync {
 		return h.handle(handlerCtx, r)
 	}

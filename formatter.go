@@ -29,8 +29,8 @@ type SlackMessageFormatter interface {
 	FormatRecord(context.Context, time.Time, slogx.Level, uintptr, string, []slog.Attr) (*slack.WebhookMessage, error)
 }
 
-// SlackMessageFormatterOptionsContext can be used to retrieve the options used by the formatter from the context.
-type SlackMessageFormatterOptionsContext struct{}
+// slackMessageFormatterOptionsContext can be used to retrieve the options used by the formatter from the context.
+type slackMessageFormatterOptionsContext struct{}
 
 // SlackMessageFormatterOptions holds the options for the message formatter.
 type SlackMessageFormatterOptions struct {
@@ -129,6 +129,25 @@ func DefaultSlackMessageFormatterOptions() SlackMessageFormatterOptions {
 	}
 }
 
+// GetSlackMessageFormatterOptionsFromContext retrieves the options from the context.
+//
+// If the options are not set in the context, a set of default options is returned instead.
+func GetSlackMessageFormatterOptionsFromContext(ctx context.Context) *SlackMessageFormatterOptions {
+	o := ctx.Value(slackMessageFormatterOptionsContext{})
+	if o != nil {
+		if opts, ok := o.(*SlackMessageFormatterOptions); ok {
+			return opts
+		}
+	}
+	opts := DefaultSlackMessageFormatterOptions()
+	return &opts
+}
+
+// AddToContext adds the options to the given context and returns the new context.
+func (o *SlackMessageFormatterOptions) AddToContext(ctx context.Context) context.Context {
+	return context.WithValue(ctx, slackMessageFormatterOptionsContext{}, o)
+}
+
 // slackMessageFormatter formats records for output as Slack messages.
 type slackMessageFormatter struct {
 	// unexported variables
@@ -175,7 +194,7 @@ func (f *slackMessageFormatter) FormatRecord(ctx context.Context, timestamp time
 
 	var err error
 	var strVal string
-	handlerCtx := context.WithValue(ctx, SlackMessageFormatterOptionsContext{}, &f.options)
+	handlerCtx := f.options.AddToContext(ctx)
 
 	// initialize the message
 	message := &slack.WebhookMessage{
