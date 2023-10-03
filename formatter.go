@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding"
 	"fmt"
+	"log/slog"
 	"regexp"
 	"strings"
 	"time"
@@ -11,7 +12,6 @@ import (
 	"github.com/slack-go/slack"
 	"go.innotegrity.dev/slogx"
 	"go.innotegrity.dev/slogx/formatter"
-	"golang.org/x/exp/slog"
 )
 
 const (

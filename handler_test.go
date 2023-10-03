@@ -5,6 +5,7 @@ package slogxslack_test
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"testing"
 	"time"
@@ -12,7 +13,6 @@ import (
 	"go.innotegrity.dev/errorx"
 	"go.innotegrity.dev/slogx"
 	slogxslack "go.innotegrity.dev/slogx-slack"
-	"golang.org/x/exp/slog"
 )
 
 func TestSlack1(t *testing.T) {

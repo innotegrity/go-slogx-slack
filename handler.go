@@ -3,13 +3,13 @@ package slogxslack
 import (
 	"context"
 	"errors"
+	"log/slog"
 	"net/http"
 
 	"github.com/slack-go/slack"
 	"go.innotegrity.dev/async"
 	"go.innotegrity.dev/generic"
 	"go.innotegrity.dev/slogx"
-	"golang.org/x/exp/slog"
 )
 
 // slackHandlerOptionsContext can be used to retrieve the options used by the handler from the context.
